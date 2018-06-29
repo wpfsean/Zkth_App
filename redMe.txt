@@ -1,0 +1,16 @@
+RadMe.txt
+
+1.app 的横竖屏切换问题：
+一、在每个Activity的配置 文件 中，我们配置如下            android:configChanges="orientation|keyboardHidden|screenSize"
+同时，我们默认Activity是横屏展示，  android:screenOrientation="landscape"
+二、横屏时我们在Activity中正常写逻辑代码
+三、当们们切换到竖屏时，Activity会执行onConfigurationChanged方法，这时我们要重新找竖屏的控件及利用上面的逻辑代码。
+
+2、app中关于视频播放的问题：
+一、我们采用的是nodemediaclient播放器，经测试，播放速度比较稳定（vlc,ijkPlayer 都有小问题）
+
+
+
+
+
+

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="56dp"
+    android:orientation="vertical">
+
+    <!--下面滑动按键-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageButton
+            android:id="@+id/network_intercom_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15.3dp"
+            android:background="@drawable/port_network_intercom_selected"
+            />
+
+        <ImageButton
+            android:id="@+id/instant_message_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/network_intercom_button_layout"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/port_instant_messaging_selected"
+            />
+
+
+        <ImageButton
+            android:id="@+id/video_play_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/instant_message_button_layout"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/port_video_surveillance_selected"
+            />
+
+
+        <ImageButton
+            android:id="@+id/alarm_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/video_play_button_layout"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/port_alarm_btn_selected"
+            />
+
+        <ImageButton
+            android:id="@+id/bullet_button_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/alarm_button_layout"
+            android:layout_marginLeft="30dp"
+            android:background="@drawable/port_bullet_btn_selected"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
