@@ -10,6 +10,13 @@ import android.widget.ImageButton;
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
+import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
+import com.zhketech.client.zkth.app.project.taking.tils.PhoneCallback;
+import com.zhketech.client.zkth.app.project.taking.tils.RegistrationCallback;
+import com.zhketech.client.zkth.app.project.taking.tils.SipService;
+import com.zhketech.client.zkth.app.project.utils.Logutils;
+
+import org.linphone.core.LinphoneCall;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -46,12 +53,22 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
 
         switch (v.getId()){
             case R.id.userlogin_button_layout:
+                registerSip();
                 openActivity(MainPager.class);
                 break;
             case R.id.userlogin_button_cancel_layout:
                 toastShort("can not finish");
+                promptNoData();
                 break;
         }
+    }
+
+    private void registerSip() {
+        if (!SipService.isReady()){
+            Linphone.startService(this);
+        }
+        Linphone.setAccount("7008","123456","19.0.0.60");
+        Linphone.login();
     }
 
     public void initViewAndListern(){
@@ -65,8 +82,22 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
     protected void onResume() {
         super.onResume();
 
-        int dir = LoginPager.this.getResources().getConfiguration().orientation;
-        Log.i("TAG", "dir:" + dir);
+       Linphone.addCallback(new RegistrationCallback() {
+           @Override
+           public void registrationOk() {
+               super.registrationOk();
+               Logutils.i("成功");
+           }
+
+           @Override
+           public void registrationFailed() {
+               super.registrationFailed();
+               Logutils.i("失败");
+               registerSip();
+           }
+       },null);
+
+
     }
 
     @Override
@@ -78,5 +109,14 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
         } else if (AppConfig.direction == 1) {
             initViewAndListern();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        SipService.removePhoneCallback();
+        SipService.removePhoneCallback();
+
     }
 }

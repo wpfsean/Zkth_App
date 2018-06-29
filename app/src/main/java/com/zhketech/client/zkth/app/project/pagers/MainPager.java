@@ -11,6 +11,13 @@ import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.ActivityManager;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
+import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
+import com.zhketech.client.zkth.app.project.taking.tils.PhoneCallback;
+import com.zhketech.client.zkth.app.project.taking.tils.RegistrationCallback;
+import com.zhketech.client.zkth.app.project.taking.tils.SipService;
+import com.zhketech.client.zkth.app.project.utils.Logutils;
+
+import org.linphone.core.LinphoneCall;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -99,5 +106,85 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        Linphone.addCallback(new RegistrationCallback() {
+            @Override
+            public void registrationNone() {
+                Logutils.i("registrationNone");
+            }
+
+            @Override
+            public void registrationProgress() {
+                super.registrationProgress();
+                Logutils.i("registrationProgress");
+            }
+
+            @Override
+            public void registrationOk() {
+                super.registrationOk();
+                Logutils.i("registrationOk");
+            }
+
+            @Override
+            public void registrationCleared() {
+                super.registrationCleared();
+                Logutils.i("registrationCleared");
+
+            }
+
+            @Override
+            public void registrationFailed() {
+                super.registrationFailed();
+                Logutils.i("registrationFailed");
+
+            }
+        }, new PhoneCallback() {
+            @Override
+            public void incomingCall(LinphoneCall linphoneCall) {
+                super.incomingCall(linphoneCall);
+                Logutils.i("incomingCall:"+linphoneCall.getRemoteAddress().getDisplayName());
+
+            }
+
+            @Override
+            public void outgoingInit() {
+                super.outgoingInit();
+                Logutils.i("outgoingInit");
+
+            }
+
+            @Override
+            public void callConnected() {
+                super.callConnected();
+                Logutils.i("callConnected");
+
+            }
+
+            @Override
+            public void callEnd() {
+                super.callEnd();
+                Logutils.i("callEnd");
+
+            }
+
+            @Override
+            public void callReleased() {
+                super.callReleased();
+                Logutils.i("callReleased");
+
+            }
+
+            @Override
+            public void error() {
+                super.error();
+                Logutils.i("error");
+
+            }
+        });
+
+
+    }
 }

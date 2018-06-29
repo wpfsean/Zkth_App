@@ -104,6 +104,8 @@ public class SipInfor extends BaseActivity implements View.OnClickListener {
 
                         Logutils.i("sipListResources:" + sipListResources.size());
                         getHttpdata();
+                    }else {
+                        showNoData();
                     }
                 }
             });
@@ -132,7 +134,6 @@ public class SipInfor extends BaseActivity implements View.OnClickListener {
         if (mList != null && mList.size() > 0) {
             mList.clear();
         }
-
         SipHttpUtils sipHttpUtils = new SipHttpUtils(AppConfig.sipServerDataUrl, new SipHttpUtils.GetHttpData() {
             @Override
             public void httpData(String result) {

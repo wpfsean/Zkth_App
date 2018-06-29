@@ -38,6 +38,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <service android:name=".taking.tils.SipService"/>
+
+
         <activity
             android:name=".pagers.LoginPager"
             android:configChanges="orientation|keyboardHidden|screenSize"

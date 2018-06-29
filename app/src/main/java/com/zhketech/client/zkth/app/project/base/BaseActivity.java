@@ -9,12 +9,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
+import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 
 /**
@@ -141,5 +145,14 @@ public abstract class BaseActivity extends AppCompatActivity {
             this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             setContentView(intiLayout());
         }
+    }
+
+
+
+    public void promptNoData(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = LayoutInflater.from(this).inflate(R.layout.prompt_no_data_item,null);
+        builder.setView(view);
+        builder.create().show();
     }
 }
