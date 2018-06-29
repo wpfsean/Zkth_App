@@ -1,5 +1,6 @@
 package com.zhketech.client.zkth.app.project.pagers;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
@@ -44,8 +45,6 @@ public class SipGroup extends BaseActivity {
     public void initView() {
         ButterKnife.bind(this);
         mContext = this;
-
-
     }
 
     @Override
@@ -54,6 +53,7 @@ public class SipGroup extends BaseActivity {
         getGroupStatusData();
 
     }
+
     private void getGroupStatusData() {
         if (mList != null && mList.size() > 0) {
             mList.clear();
@@ -78,30 +78,37 @@ public class SipGroup extends BaseActivity {
                                 @Override
                                 public void onItemClick(View view, int position) {
                                     Logutils.i("positon:" + position);
-//                                    int group_id = mList.get(position).getGroup_id();
-//                                    Intent intent = new Intent();
-//                                    intent.putExtra("group_id", group_id);
-//                                    intent.setClass(SipGroup.this, SipInfor.class);
-//                                    startActivity(intent);
+                                    int group_id = mList.get(position).getGroup_id();
+                                    Intent intent = new Intent();
+                                    intent.putExtra("group_id", group_id);
+                                    intent.setClass(SipGroup.this, SipInfor.class);
+                                    startActivity(intent);
                                 }
                             });
                         }
                     });
                 } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            toastShort("未从服务器上获取到sip数据...");
-                        }
-                    });
+                    showNoData();
                 }
             }
             @Override
             public void callbackFailData(String infor) {
-
+                showNoData();
             }
         });
         sipGroupResourcesCallback.start();
+    }
+    public void showNoData() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                builder.setTitle("Not Data");
+                builder.setMessage("No data abtained");
+                builder.create().show();
+
+            }
+        });
     }
 
 }

@@ -63,6 +63,12 @@
             android:screenOrientation="landscape"></activity>
 
 
+        <activity
+            android:name=".pagers.SipInfor"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"></activity>
+
+
     </application>
 
 </manifest>

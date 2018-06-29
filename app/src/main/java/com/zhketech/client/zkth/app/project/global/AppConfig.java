@@ -32,10 +32,19 @@ public class AppConfig {
     //
     public static String server_ip = "19.0.0.28";
 
+    public static String current_ip = "19.0.0.78";
+
     public static String current_user = "admin";
-
-
     public static String current_pass = "pass";
+    public static String native_sip_server_ip = "19.0.0.60";
+
+    public static String native_sip_name = "7008";
+
+    //sip服务器管理员密码
+    public static String sipServerPass = "123456";
+    //sip服务器获取所有的sip用户信息
+    public static String sipServerDataUrl = "http://" + native_sip_server_ip + ":8080/openapi/localuser/list?{\"syskey\":\"" + sipServerPass + "\"}";
+
 
 
 
