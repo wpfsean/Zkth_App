@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * sip分组界面
  */
 
-public class SipGroup extends BaseActivity {
+public class SipGroupPager extends BaseActivity {
 
     Context mContext;
 
@@ -81,7 +81,7 @@ public class SipGroup extends BaseActivity {
                                     int group_id = mList.get(position).getGroup_id();
                                     Intent intent = new Intent();
                                     intent.putExtra("group_id", group_id);
-                                    intent.setClass(SipGroup.this, SipInfor.class);
+                                    intent.setClass(SipGroupPager.this, SipInforPager.class);
                                     startActivity(intent);
                                 }
                             });

@@ -21,7 +21,6 @@ import org.linphone.core.LinphoneCall;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainPager extends BaseActivity implements View.OnClickListener {
 
@@ -75,7 +74,7 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
     }
 
     //SipGroup界面
-    public void goToIntercomScreen(){openActivity(SipGroup.class);}
+    public void goToIntercomScreen(){openActivity(SipGroupPager.class);}
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -185,6 +184,11 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
             }
         });
 
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SipService.removePhoneCallback();;
     }
 }

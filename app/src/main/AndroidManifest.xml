@@ -40,6 +40,8 @@
         android:theme="@style/AppTheme">
 
         <service android:name=".taking.tils.SipService"/>
+        <service android:name=".rtsp.RtspReceiveService"></service>
+        <service android:name=".rtsp.RtspServer"></service>
 
 
         <activity
@@ -62,16 +64,21 @@
             android:screenOrientation="landscape"></activity>
 
         <activity
-            android:name=".pagers.SipGroup"
+            android:name=".pagers.SipGroupPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"></activity>
 
 
         <activity
-            android:name=".pagers.SipInfor"
+            android:name=".pagers.SipInforPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"></activity>
 
+
+        <activity
+            android:name=".pagers.SingleCallActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"></activity>
 
     </application>
 

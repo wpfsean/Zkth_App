@@ -90,7 +90,7 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
 
         fourthPlayer= new NodePlayer(this);
         fourthPlayer.setPlayerView(fourthPlayerView);
-        fourthPlayer.setInputUrl("rtmp://live.hkstv.hk.lxdns.com/live/hksdddddddddddd");
+        fourthPlayer.setInputUrl("rtsp://admin:pass@19.0.0.213:554/H264?ch=1&amp;subtype=0&amp;proto=Onvif");
         fourthPlayer.setNodePlayerDelegate(this);
         fourthPlayer.setAudioEnable(AppConfig.isVideoSound);
         fourthPlayer.setVideoEnable(true);

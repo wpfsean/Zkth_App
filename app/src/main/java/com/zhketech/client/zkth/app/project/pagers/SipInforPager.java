@@ -15,7 +15,6 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.beans.SipBean;
@@ -24,16 +23,13 @@ import com.zhketech.client.zkth.app.project.callbacks.RequestSipSourcesThread;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.utils.Logutils;
 import com.zhketech.client.zkth.app.project.utils.SipHttpUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -41,7 +37,7 @@ import butterknife.ButterKnife;
  * Created by Root on 2018/6/29.
  */
 
-public class SipInfor extends BaseActivity implements View.OnClickListener {
+public class SipInforPager extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.gridview)
     public GridView gridview;
@@ -209,10 +205,10 @@ public class SipInfor extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        //  Intent intent = new Intent(this, SingleCallActivity.class);
+          Intent intent = new Intent(this, SingleCallActivity.class);
         switch (v.getId()) {
             case R.id.sip_group_back_layout:
-                SipInfor.this.finish();
+                SipInforPager.this.finish();
                 break;
             case R.id.sip_group_lastpage_layout:
                 runOnUiThread(new Runnable() {
@@ -241,30 +237,30 @@ public class SipInfor extends BaseActivity implements View.OnClickListener {
                 break;
             case R.id.video_intercom_layout:
 
-//                if (adapterList != null && adapterList.size() > 0) {
-//                    intent.putExtra("isCall", true);
-//                    if (selected != -1) {
-//                        if (adapterList.get(selected) != null) {
-//                            intent.putExtra("userName", adapterList.get(selected).getUsrname());
-//                            intent.putExtra("isVideo", true);
-//                        }
-//                    }
-//                    startActivity(intent);
-//                }
+                if (adapterList != null && adapterList.size() > 0) {
+                    intent.putExtra("isCall", true);
+                    if (selected != -1) {
+                        if (adapterList.get(selected) != null) {
+                            intent.putExtra("userName", adapterList.get(selected).getUsrname());
+                            intent.putExtra("isVideo", true);
+                        }
+                    }
+                    startActivity(intent);
+                }
 
                 break;
             case R.id.voice_intercom_icon_layout:
 
-//                if (adapterList != null && adapterList.size() > 0) {
-//                    intent.putExtra("isCall", true);
-//                    if (selected != -1) {
-//                        if (adapterList.get(selected) != null) {
-//                            if (adapterList.get(selected) != null)
-//                                intent.putExtra("userName", adapterList.get(selected).getUsrname());
-//                            startActivity(intent);
-//                        }
-//                    }
-//                }
+                if (adapterList != null && adapterList.size() > 0) {
+                    intent.putExtra("isCall", true);
+                    if (selected != -1) {
+                        if (adapterList.get(selected) != null) {
+                            if (adapterList.get(selected) != null)
+                                intent.putExtra("userName", adapterList.get(selected).getUsrname());
+                            startActivity(intent);
+                        }
+                    }
+                }
                 break;
         }
     }

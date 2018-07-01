@@ -8,7 +8,10 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
+
+import com.zhketech.client.zkth.app.project.pagers.SingleCallActivity;
 
 import org.linphone.core.LinphoneAddress;
 import org.linphone.core.LinphoneAuthInfo;
@@ -134,20 +137,20 @@ public class SipService extends Service implements LinphoneCoreListener {
         if (state == LinphoneCall.State.IncomingReceived && sPhoneCallback != null) {
             sPhoneCallback.incomingCall(linphoneCall);
             String str = "有电话打进来了：" + linphoneCall.getRemoteAddress().getPort() + "--" + linphoneCall.getRemoteAddress().getDisplayName();
-            //  Log.e(TAG, "callState = " + str);
-//            try {
-//                Linphone.acceptCall();
-//                Linphone.toggleSpeaker(true);
-//                linphoneCore.acceptCall(linphoneCall);
-//                Intent intent = new Intent(SipService.this, SingleCallActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("isCall", false);
-//                intent.putExtra("userName", linphoneCall.getRemoteAddress().getDisplayName());
-//                startActivity(intent);
-//            } catch (LinphoneCoreException e) {
-//                e.printStackTrace();
-//            }
-
+              Log.i("TAG", "callState = " + str);
+            try {
+                Linphone.acceptCall();
+                Linphone.toggleSpeaker(true);
+                linphoneCore.acceptCall(linphoneCall);
+                Intent intent = new Intent(SipService.this, SingleCallActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("isCall", false);
+                intent.putExtra("isCallConnected",true);
+                intent.putExtra("userName", linphoneCall.getRemoteAddress().getDisplayName());
+                startActivity(intent);
+            } catch (LinphoneCoreException e) {
+                e.printStackTrace();
+            }
         }
 
         if (state == LinphoneCall.State.OutgoingInit && sPhoneCallback != null) {
