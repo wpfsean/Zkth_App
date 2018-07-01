@@ -24,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.beans.SipBean;
@@ -35,11 +36,14 @@ import com.zhketech.client.zkth.app.project.rtsp.record.Constant;
 import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
 import com.zhketech.client.zkth.app.project.taking.tils.PhoneCallback;
 import com.zhketech.client.zkth.app.project.utils.Logutils;
+
 import org.linphone.core.LinphoneCall;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.nodemedia.NodePlayer;
@@ -162,7 +166,6 @@ public class SingleCallActivity extends BaseActivity implements View.OnClickList
         isVideo = this.getIntent().getBooleanExtra("isVideo", false);//是可视频电话，还是语音电话
 
 
-
         sipListResources = new ArrayList<>();
         String result = "";
 
@@ -174,22 +177,24 @@ public class SingleCallActivity extends BaseActivity implements View.OnClickList
         phoneCallback();
 
         //判断来电是否已接通
-        boolean isConnet =  this.getIntent().getBooleanExtra("isCallConnected", false);
-        if (isConnet){runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                show_call_time.setText("00:00");
-                hangupButton.setBackgroundResource(R.drawable.btn_hangup_select);
-                text_who_is_calling_information.setText("正在与" + userName + "通话");
-                threadStart();
-            }
-        });}
+        boolean isConnet = this.getIntent().getBooleanExtra("isCallConnected", false);
+        if (isConnet) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    show_call_time.setText("00:00");
+                    hangupButton.setBackgroundResource(R.drawable.btn_hangup_select);
+                    text_who_is_calling_information.setText("正在与" + userName + "通话");
+                    threadStart();
+                }
+            });
+        }
         //向外播放电话
         if (isCall) {
             Linphone.callTo(userName, false);
         }
         //视频电话向外播打电话
-        if (isCall && isVideo){
+        if (isCall && isVideo) {
             text_who_is_calling_information.setVisibility(View.GONE);
             main_player_framelayout.setVisibility(View.VISIBLE);
             second_player_relativelayout.setVisibility(View.VISIBLE);
@@ -312,9 +317,7 @@ public class SingleCallActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //  bindService(intent, mRtspServiceConnection, Context.BIND_AUTO_CREATE);
-
-        // if (isCall){  unbindService(mRtspServiceConnection);}
+        unbindService(mRtspServiceConnection);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)

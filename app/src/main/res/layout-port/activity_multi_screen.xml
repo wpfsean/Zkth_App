@@ -78,263 +78,275 @@
             android:layout_height="270dp">
 
             <!--单屏播放-->
-
-            <FrameLayout
-                android:id="@+id/onescreen_framelayout_layout"
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/single_surfaceview_parent_relativelayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="1dp"
-                android:paddingRight="1dp"
-                android:visibility="gone">
-
-                <cn.nodemedia.NodePlayerView
-                    android:id="@+id/single_player_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
-
-                <ProgressBar
-                    android:id="@+id/single_player_progressbar_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center" />
-
-                <TextView
-                    android:id="@+id/dispaly_video_loading_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Loading..." />
-            </FrameLayout>
-
-
-            <FrameLayout
-                android:id="@+id/fourscreen_framelayout_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible">
-
-                <!--四屏播放-->
-                <LinearLayout
+                android:layout_height="match_parent">
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
-                    <!--上半部分-->
-                    <LinearLayout
+                    android:paddingLeft="1dp"
+                    android:paddingRight="1dp"
+                    >
+
+                    <cn.nodemedia.NodePlayerView
+                        android:id="@+id/single_player_layout"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-                        <!--第一个视频播放的区域-->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
+                        android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
 
-                            <RelativeLayout
-                                android:id="@+id/first_surfaceview_relativelayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
+                    <ProgressBar
+                        android:id="@+id/single_player_progressbar_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center" />
 
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="1dp"
-                                    android:visibility="visible">
+                    <TextView
+                        android:id="@+id/dispaly_video_loading_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Loading..." />
+                </FrameLayout>
 
-                                    <cn.nodemedia.NodePlayerView
-                                        android:id="@+id/first_player_layout"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
-
-                                    <ProgressBar
-                                        android:id="@+id/first_pr_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:id="@+id/first_dispaly_loading_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:text="Loading..."
-                                        android:textColor="@color/white" />
-                                </FrameLayout>
-                            </RelativeLayout>
+            </RelativeLayout>
 
 
-                        </LinearLayout>
-                        <!--第二个视频播放的区域-->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
 
-                            <RelativeLayout
-                                android:id="@+id/second_surfaceview_relativelayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="1dp"
-                                    android:visibility="visible">
-
-                                    <cn.nodemedia.NodePlayerView
-                                        android:id="@+id/second_player_layout"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
-
-                                    <ProgressBar
-                                        android:id="@+id/second_pr_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:id="@+id/seond_dispaly_loading_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:text="Loading..."
-                                        android:textColor="@color/white" />
-                                </FrameLayout>
-                            </RelativeLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                    <!--下半部分-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1">
-
-                        <!--第三个视频播放区域-->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:id="@+id/third_surfaceview_relativelayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="1dp"
-                                    android:visibility="visible">
-
-                                    <cn.nodemedia.NodePlayerView
-                                        android:id="@+id/third_player_layout"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
-
-                                    <ProgressBar
-                                        android:id="@+id/third_pr_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:id="@+id/third_dispaly_loading_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:text="Loading..."
-                                        android:textColor="@color/white" />
-                                </FrameLayout>
-                            </RelativeLayout>
-
-                        </LinearLayout>
-                        <!--每四个视频播放区域-->
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1">
-
-                            <RelativeLayout
-                                android:id="@+id/fourth_surfaceview_relativelayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <FrameLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:padding="1dp"
-                                    android:visibility="visible">
-
-                                    <cn.nodemedia.NodePlayerView
-                                        android:id="@+id/fourth_player_layout"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
-
-                                    <ProgressBar
-                                        android:id="@+id/fourth_pr_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center" />
-
-                                    <TextView
-                                        android:id="@+id/fourth_dispaly_loading_layout"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center"
-                                        android:text="Loading..."
-                                        android:textColor="@color/white" />
-                                </FrameLayout>
-                            </RelativeLayout>
-
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!--视频区域的划线-->
-                <RelativeLayout
+            <RelativeLayout
+                android:id="@+id/four_surfaceview_parent_relativelayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:visibility="visible">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_alignParentTop="true"
-                        android:background="@color/white" />
-
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_alignParentBottom="true"
-                        android:background="@color/white" />
-
-
-                    <TextView
-                        android:layout_width="0.5dp"
+                    <!--四屏播放-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:background="@color/white" />
+                        android:orientation="vertical">
+                        <!--上半部分-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+                            <!--第一个视频播放的区域-->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
 
-                    <TextView
-                        android:layout_width="0.5dp"
-                        android:layout_height="match_parent"
-                        android:layout_alignParentRight="true"
-                        android:background="@color/white" />
+                                <RelativeLayout
+                                    android:id="@+id/first_surfaceview_relativelayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="0.5dp"
-                        android:layout_centerVertical="true"
-                        android:background="@color/white" />
+                                    <FrameLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="1dp"
+                                        android:visibility="visible">
+
+                                        <cn.nodemedia.NodePlayerView
+                                            android:id="@+id/first_player_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
+
+                                        <ProgressBar
+                                            android:id="@+id/first_pr_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center" />
+
+                                        <TextView
+                                            android:id="@+id/first_dispaly_loading_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="Loading..."
+                                            android:textColor="@color/white" />
+                                    </FrameLayout>
+                                </RelativeLayout>
 
 
-                    <TextView
-                        android:layout_width="0.5dp"
-                        android:layout_height="fill_parent"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/white" />
+                            </LinearLayout>
+                            <!--第二个视频播放的区域-->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
 
-                </RelativeLayout>
-            </FrameLayout>
+                                <RelativeLayout
+                                    android:id="@+id/second_surfaceview_relativelayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <FrameLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="1dp"
+                                        android:visibility="visible">
+
+                                        <cn.nodemedia.NodePlayerView
+                                            android:id="@+id/second_player_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
+
+                                        <ProgressBar
+                                            android:id="@+id/second_pr_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center" />
+
+                                        <TextView
+                                            android:id="@+id/seond_dispaly_loading_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="Loading..."
+                                            android:textColor="@color/white" />
+                                    </FrameLayout>
+                                </RelativeLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                        <!--下半部分-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1">
+
+                            <!--第三个视频播放区域-->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/third_surfaceview_relativelayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <FrameLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="1dp"
+                                        android:visibility="visible">
+
+                                        <cn.nodemedia.NodePlayerView
+                                            android:id="@+id/third_player_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
+
+                                        <ProgressBar
+                                            android:id="@+id/third_pr_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center" />
+
+                                        <TextView
+                                            android:id="@+id/third_dispaly_loading_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="Loading..."
+                                            android:textColor="@color/white" />
+                                    </FrameLayout>
+                                </RelativeLayout>
+
+                            </LinearLayout>
+                            <!--每四个视频播放区域-->
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1">
+
+                                <RelativeLayout
+                                    android:id="@+id/fourth_surfaceview_relativelayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <FrameLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:padding="1dp"
+                                        android:visibility="visible">
+
+                                        <cn.nodemedia.NodePlayerView
+                                            android:id="@+id/fourth_player_layout"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
+
+                                        <ProgressBar
+                                            android:id="@+id/fourth_pr_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center" />
+
+                                        <TextView
+                                            android:id="@+id/fourth_dispaly_loading_layout"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center"
+                                            android:text="Loading..."
+                                            android:textColor="@color/white" />
+                                    </FrameLayout>
+                                </RelativeLayout>
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!--视频区域的划线-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_alignParentTop="true"
+                            android:background="@color/white" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_alignParentBottom="true"
+                            android:background="@color/white" />
+
+
+                        <TextView
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentLeft="true"
+                            android:background="@color/white" />
+
+                        <TextView
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentRight="true"
+                            android:background="@color/white" />
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.5dp"
+                            android:layout_centerVertical="true"
+                            android:background="@color/white" />
+
+
+                        <TextView
+                            android:layout_width="0.5dp"
+                            android:layout_height="fill_parent"
+                            android:layout_centerHorizontal="true"
+                            android:background="@color/white" />
+
+                    </RelativeLayout>
+                </FrameLayout>
+            </RelativeLayout>
+
+
 
 
         </RelativeLayout>

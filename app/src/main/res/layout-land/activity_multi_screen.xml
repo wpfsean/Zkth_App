@@ -60,12 +60,13 @@
 
     <!--视频播放所在的布局-->
     <RelativeLayout
-        android:id="@+id/four_surfaceview_parent_relativelayout"
+        android:id="@+id/video_view_parent_relativelayout"
         android:layout_width="494dp"
         android:layout_height="326dp"
         android:layout_below="@+id/icone_relativtelayout_title">
         <!--四屏所在的区域-->
         <RelativeLayout
+            android:id="@+id/four_surfaceview_parent_relativelayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible">
@@ -436,7 +437,7 @@
 
 
                     <cn.nodemedia.NodePlayerView
-                        android:id="@+id/single_vew"
+                        android:id="@+id/single_player_layout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"></cn.nodemedia.NodePlayerView>
 
@@ -493,7 +494,7 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/icone_relativtelayout_title"
         android:layout_marginLeft="1dp"
-        android:layout_toRightOf="@+id/four_surfaceview_parent_relativelayout"
+        android:layout_toRightOf="@+id/video_view_parent_relativelayout"
         android:background="@drawable/relativelayout_bg_shape">
 
         <RelativeLayout
@@ -513,7 +514,7 @@
                 android:layout_centerHorizontal="true">
 
                 <ImageButton
-                    android:id="@+id/icon_btn1"
+                    android:id="@+id/four_screen_button_select"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
@@ -521,12 +522,12 @@
                     android:background="@drawable/btn_foursplitscreen_select" />
 
                 <ImageButton
-                    android:id="@+id/icon_btn2"
+                    android:id="@+id/single_screen_button_selecte"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/icon_btn1"
+                    android:layout_toRightOf="@+id/four_screen_button_select"
                     android:background="@drawable/btn_amplification_select" />
 
                 <ImageButton
@@ -535,7 +536,7 @@
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/icon_btn2"
+                    android:layout_toRightOf="@+id/single_screen_button_selecte"
                     android:background="@drawable/btn_list_select" />
             </RelativeLayout>
 
@@ -600,7 +601,7 @@
                     android:background="@drawable/btn_alarm_select" />
 
                 <ImageButton
-                    android:id="@+id/icon_btn9"
+                    android:id="@+id/finish_back_layout"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"

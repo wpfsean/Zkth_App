@@ -3,20 +3,28 @@ package com.zhketech.client.zkth.app.project.pagers;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
+import com.zhketech.client.zkth.app.project.beans.DeviceInfor;
+import com.zhketech.client.zkth.app.project.beans.VideoBen;
+import com.zhketech.client.zkth.app.project.callbacks.RequestVideoSourcesThread;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
 import com.zhketech.client.zkth.app.project.taking.tils.PhoneCallback;
 import com.zhketech.client.zkth.app.project.taking.tils.RegistrationCallback;
 import com.zhketech.client.zkth.app.project.taking.tils.SipService;
 import com.zhketech.client.zkth.app.project.utils.Logutils;
+import com.zhketech.client.zkth.app.project.utils.OnvifUtils;
 
 import org.linphone.core.LinphoneCall;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,10 +65,47 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
                 openActivity(MainPager.class);
                 break;
             case R.id.userlogin_button_cancel_layout:
-                toastShort("can not finish");
-                promptNoData();
+//                toastShort("can not finish");
+//                promptNoData();
+                
+                onvifRtsp();
+                
                 break;
         }
+    }
+    //解析rtsp数据
+    private void onvifRtsp() {
+        RequestVideoSourcesThread requestVideoSourcesThread = new RequestVideoSourcesThread(LoginPager.this, new RequestVideoSourcesThread.GetDataListener() {
+            @Override
+            public void getResult(List<VideoBen> devices) {
+                if (devices != null && devices.size() > 0){
+                    for (VideoBen v : devices){
+
+                        DeviceInfor deviceInfor = new DeviceInfor();
+                        deviceInfor.setUsername(v.getUsername());
+                        deviceInfor.setPassword(v.getPassword());
+                        deviceInfor.setChannel(v.getChannel());
+                        deviceInfor.setServiceURL("http://" + v.getIp() + "/onvif/device_service");
+
+                        OnvifUtils onvifUtils = new OnvifUtils(deviceInfor, new OnvifUtils.OnHttpSoapListener() {
+                            @Override
+                            public void OnHttpSoapDone(DeviceInfor camera, String uri, boolean isSuccess) {
+
+                                Logutils.i("TAG:"+isSuccess+"\n"+uri);
+
+
+                            }
+                        });
+                        new Thread(onvifUtils).start();
+
+
+                    }
+                }else {
+                    Logutils.i("No data");
+                }
+            }
+        });
+        requestVideoSourcesThread.start();
     }
 
     private void registerSip() {
