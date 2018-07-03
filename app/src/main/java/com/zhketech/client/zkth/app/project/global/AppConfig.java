@@ -15,6 +15,10 @@ public class AppConfig {
     }
 
 
+    //true为主码流，false为子码流
+    public static boolean isMainStream = false;
+
+
     public  static  int direction = 2;//(1竖屏，2横屏)
 
     //播放视频是否有声音
@@ -45,6 +49,9 @@ public class AppConfig {
     //sip服务器获取所有的sip用户信息
     public static String sipServerDataUrl = "http://" + native_sip_server_ip + ":8080/openapi/localuser/list?{\"syskey\":\"" + sipServerPass + "\"}";
 
+
+
+    public static String data = "";
 
 
 

@@ -13,6 +13,8 @@ import com.zhketech.client.zkth.app.project.beans.SipGroupBean;
 import java.util.List;
 
 /**
+ * SipGroup分组适配器
+ *
  * Created by Root on 2018/5/21.
  */
 

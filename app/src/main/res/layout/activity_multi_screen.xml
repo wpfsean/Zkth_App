@@ -546,7 +546,7 @@
                 android:layout_marginTop="6dp">
 
                 <ImageButton
-                    android:id="@+id/icon_btn4"
+                    android:id="@+id/video_previous_button"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
@@ -559,11 +559,11 @@
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/icon_btn4"
+                    android:layout_toRightOf="@+id/video_previous_button"
                     android:background="@drawable/btn_refresh_select" />
 
                 <ImageButton
-                    android:id="@+id/icon_btn6"
+                    android:id="@+id/video_nextpage_button"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
