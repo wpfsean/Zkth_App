@@ -48,6 +48,8 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
                     Device device = (Device) bundle.getSerializable("device");
                     dataSources.add(device);
                     if (dataSources.size() == num) {
+
+                        Logutils.i(dataSources.toString());
                         Log.i("TAG", dataSources.size() + "");
                         Logutils.i("Date:" + new Date().toString());
                         String json = GsonUtils.getGsonInstace().list2String(dataSources);

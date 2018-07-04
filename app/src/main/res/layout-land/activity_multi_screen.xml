@@ -444,13 +444,13 @@
                 </FrameLayout>
 
                 <ProgressBar
-                    android:id="@+id/single_first_progressbar"
+                    android:id="@+id/single_player_progressbar_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true" />
 
                 <TextView
-                    android:id="@+id/single_first_text"
+                    android:id="@+id/dispaly_video_loading_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -467,7 +467,7 @@
                 android:layout_below="@+id/single_surfaceview_relativelayout">
 
                 <TextView
-                    android:id="@+id/show_surfaceview_information"
+                    android:id="@+id/display_video_information_text_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -637,8 +637,9 @@
                     android:id="@+id/video_ptz_up"
                     android:layout_width="33dp"
                     android:layout_height="17dp"
+                    android:layout_alignLeft="@+id/video_ptz_down"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignStart="@+id/video_ptz_down"
                     android:layout_marginTop="9dp"
                     android:background="@drawable/btn_down_select" />
 

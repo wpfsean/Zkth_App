@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.onvif.Device;
 import com.zhketech.client.zkth.app.project.onvif.MediaProfile;
+import com.zhketech.client.zkth.app.project.utils.ControlPtz;
 import com.zhketech.client.zkth.app.project.utils.GsonUtils;
 import com.zhketech.client.zkth.app.project.utils.Logutils;
 import com.zhketech.client.zkth.app.project.utils.PageModel;
@@ -40,11 +42,12 @@ import cn.nodemedia.NodePlayerView;
  * 播放视频时Activty
  */
 
-public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageChangeListener, NodePlayerDelegate, View.OnClickListener {
+public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageChangeListener, NodePlayerDelegate, View.OnClickListener, View.OnTouchListener {
 
     //当前的屏幕状态（true 横屏， false 竖屏）
     boolean isLand = true;
     PageModel pm;//分页加载器
+    PageModel singlePm;//分页加载器;//分页加载器
     int videoCurrentPage = 1;//当前页码
 
     //数据集合
@@ -52,7 +55,7 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     //当前四屏的数据集合
     List<Device> currentList = new ArrayList<>();
 
-
+    List<Device> currentSingleList = new ArrayList<>();
     //竖屏底总横向滑动的viewPager
     ViewPager bottomViewPager;
     //单屏的NodeMediaclient播放器
@@ -117,6 +120,35 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     TextView fourth_dispaly_loading_layout;
 
 
+    @BindView(R.id.single_player_progressbar_layout)
+    ProgressBar single_player_progressbar_layout;
+    @BindView(R.id.dispaly_video_loading_layout)
+    TextView dispaly_video_loading_layout;
+
+    @BindView(R.id.display_video_information_text_layout)
+    TextView display_video_information_text_layout;
+
+    //上下左右四个键
+    @BindView(R.id.video_ptz_up)
+    ImageButton video_ptz_up;
+    @BindView(R.id.video_ptz_down)
+    ImageButton video_ptz_down;
+    @BindView(R.id.video_ptz_left)
+    ImageButton video_ptz_left;
+    @BindView(R.id.video_ptz_right)
+    ImageButton video_ptz_right;
+
+    @BindView(R.id.video_zoomout_button)
+    ImageButton video_zoomout_button;
+
+    @BindView(R.id.video_zoombig_button)
+    ImageButton video_zoombig_button;
+
+
+    boolean isCurrentFourScreen = true;//当前状态是四分屏
+    boolean isCurrentSingleScreen = false;//当前状态是单屏
+
+
     //判断这四个视频 中否被选中
     boolean firstViewSelect = false;
     boolean secondViewSelect = false;
@@ -143,11 +175,16 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     public void initView() {
         ButterKnife.bind(this);
 
+        video_ptz_up.setOnTouchListener(this);
+        video_ptz_down.setOnTouchListener(this);
+        video_ptz_left.setOnTouchListener(this);
+        video_ptz_right.setOnTouchListener(this);
+        video_zoomout_button.setOnTouchListener(this);
+        video_zoombig_button.setOnTouchListener(this);
+
         firstPalyer = new NodePlayer(this);
         firstPalyer.setPlayerView(firstPlayerView);
-
         firstPlayerView.setOnClickListener(this);
-
 
         secondPlayer = new NodePlayer(this);
         secondPlayer.setPlayerView(secondPlayerView);
@@ -178,95 +215,98 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
             devicesList = mlist;
         }
         pm = new PageModel(devicesList, 4);
-        currentList = pm.getObjects(1);
+        currentList = pm.getObjects(videoCurrentPage);
+
+        singlePm = new PageModel(devicesList, 1);
+        currentSingleList = singlePm.getObjects(videoCurrentPage);
         initPlayer();
     }
 
     private void initPlayer() {
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                first_pr_layout.setVisibility(View.VISIBLE);
-                first_dispaly_loading_layout.setVisibility(View.VISIBLE);
-                first_dispaly_loading_layout.setText("Loading...");
+        if (currentList.size() == 4) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    first_pr_layout.setVisibility(View.VISIBLE);
+                    first_dispaly_loading_layout.setVisibility(View.VISIBLE);
+                    first_dispaly_loading_layout.setText("Loading...");
 
-                second_pr_layout.setVisibility(View.VISIBLE);
-                second_dispaly_loading_layout.setVisibility(View.VISIBLE);
-                second_dispaly_loading_layout.setText("Loading...");
+                    second_pr_layout.setVisibility(View.VISIBLE);
+                    second_dispaly_loading_layout.setVisibility(View.VISIBLE);
+                    second_dispaly_loading_layout.setText("Loading...");
 
-                third_pr_layout.setVisibility(View.VISIBLE);
-                third_dispaly_loading_layout.setVisibility(View.VISIBLE);
-                third_dispaly_loading_layout.setText("Loading...");
+                    third_pr_layout.setVisibility(View.VISIBLE);
+                    third_dispaly_loading_layout.setVisibility(View.VISIBLE);
+                    third_dispaly_loading_layout.setText("Loading...");
 
-                fourth_pr_layout.setVisibility(View.VISIBLE);
-                fourth_dispaly_loading_layout.setVisibility(View.VISIBLE);
-                fourth_dispaly_loading_layout.setText("Loading...");
+                    fourth_pr_layout.setVisibility(View.VISIBLE);
+                    fourth_dispaly_loading_layout.setVisibility(View.VISIBLE);
+                    fourth_dispaly_loading_layout.setText("Loading...");
+                }
+            });
+
+
+            String rtsp1 = "";
+            if (!TextUtils.isEmpty(currentList.get(0).getRtspUrl())) {
+                rtsp1 = currentList.get(0).getRtspUrl();
+            } else {
+                rtsp1 = "";
             }
-        });
+            String rtsp2 = "";
+            if (!TextUtils.isEmpty(currentList.get(1).getRtspUrl())) {
+                rtsp2 = currentList.get(1).getRtspUrl();
+            } else {
+                rtsp2 = "";
+            }
+            String rtsp3 = "";
+            if (!TextUtils.isEmpty(currentList.get(2).getRtspUrl())) {
+                rtsp3 = currentList.get(2).getRtspUrl();
+            } else {
+                rtsp3 = "";
+            }
+            String rtsp4 = "";
+            if (!TextUtils.isEmpty(currentList.get(3).getRtspUrl())) {
+                rtsp4 = currentList.get(3).getRtspUrl();
+            } else {
+                rtsp4 = "";
+            }
 
-        String rtsp1 = "";
-        if (!TextUtils.isEmpty(currentList.get(0).getRtspUrl())) {
-            rtsp1 = currentList.get(0).getRtspUrl();
-        } else {
-            rtsp1 = "";
-        }
-        String rtsp2 = "";
-        if (!TextUtils.isEmpty(currentList.get(1).getRtspUrl())) {
-            rtsp2 = currentList.get(1).getRtspUrl();
-        } else {
-            rtsp2 = "";
-        }
-        String rtsp3 = "";
-        if (!TextUtils.isEmpty(currentList.get(2).getRtspUrl())) {
-            rtsp3 = currentList.get(2).getRtspUrl();
-        } else {
-            rtsp3 = "";
-        }
-        String rtsp4 = "";
-        if (!TextUtils.isEmpty(currentList.get(3).getRtspUrl())) {
-            rtsp4 = currentList.get(3).getRtspUrl();
-        } else {
-            rtsp4 = "";
-        }
+            Logutils.i("rtsp1:" + rtsp1 + "\n" + "rtsp2:" + rtsp2 + "\n" + "rtsp3:" + rtsp3 + "\n" + "rtsp4:" + rtsp4);
 
-        Logutils.i("rtsp1:" + rtsp1 + "\n" + "rtsp2:" + rtsp2 + "\n" + "rtsp3:" + rtsp3 + "\n" + "rtsp4:" + rtsp4);
-
-        if (firstPalyer != null && firstPalyer.isPlaying()) {
-            firstPalyer.stop();
+            if (firstPalyer != null && firstPalyer.isPlaying()) {
+                firstPalyer.stop();
+            }
+            if (secondPlayer != null && secondPlayer.isPlaying()) {
+                secondPlayer.stop();
+            }
+            if (thirdPlayer != null && thirdPlayer.isPlaying()) {
+                thirdPlayer.stop();
+            }
+            if (fourthPlayer != null && fourthPlayer.isPlaying()) {
+                fourthPlayer.stop();
+            }
+            firstPalyer.setInputUrl(rtsp1);
+            firstPalyer.setNodePlayerDelegate(this);
+            firstPalyer.setAudioEnable(AppConfig.isVideoSound);
+            firstPalyer.setVideoEnable(true);
+            firstPalyer.start();
+            secondPlayer.setInputUrl(rtsp2);
+            secondPlayer.setNodePlayerDelegate(this);
+            secondPlayer.setAudioEnable(AppConfig.isVideoSound);
+            secondPlayer.setVideoEnable(true);
+            secondPlayer.start();
+            thirdPlayer.setInputUrl(rtsp3);
+            thirdPlayer.setNodePlayerDelegate(this);
+            thirdPlayer.setAudioEnable(AppConfig.isVideoSound);
+            thirdPlayer.setVideoEnable(true);
+            thirdPlayer.start();
+            fourthPlayer.setInputUrl(rtsp4);
+            fourthPlayer.setNodePlayerDelegate(this);
+            fourthPlayer.setAudioEnable(AppConfig.isVideoSound);
+            fourthPlayer.setVideoEnable(true);
+            fourthPlayer.start();
         }
-        if (secondPlayer != null && secondPlayer.isPlaying()) {
-            secondPlayer.stop();
-        }
-        if (thirdPlayer != null && thirdPlayer.isPlaying()) {
-            thirdPlayer.stop();
-        }
-        if (fourthPlayer != null && fourthPlayer.isPlaying()) {
-            fourthPlayer.stop();
-        }
-
-        firstPalyer.setInputUrl(rtsp1);
-        firstPalyer.setNodePlayerDelegate(this);
-        firstPalyer.setAudioEnable(AppConfig.isVideoSound);
-        firstPalyer.setVideoEnable(true);
-        firstPalyer.start();
-        secondPlayer.setInputUrl(rtsp2);
-        secondPlayer.setNodePlayerDelegate(this);
-        secondPlayer.setAudioEnable(AppConfig.isVideoSound);
-        secondPlayer.setVideoEnable(true);
-        secondPlayer.start();
-        thirdPlayer.setInputUrl(rtsp3);
-        thirdPlayer.setNodePlayerDelegate(this);
-        thirdPlayer.setAudioEnable(AppConfig.isVideoSound);
-        thirdPlayer.setVideoEnable(true);
-        thirdPlayer.start();
-        fourthPlayer.setInputUrl(rtsp4);
-        fourthPlayer.setNodePlayerDelegate(this);
-        fourthPlayer.setAudioEnable(AppConfig.isVideoSound);
-        fourthPlayer.setVideoEnable(true);
-        fourthPlayer.start();
-
-
     }
 
 
@@ -276,19 +316,46 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     @OnClick(R.id.video_nextpage_button)
     public void videoNextPage(View view) {
         videoCurrentPage++;
-        if (pm != null && pm.isHasNextPage()) {
-            currentList = pm.getObjects(videoCurrentPage);
-            initPlayer();
+        if (isCurrentFourScreen) {
+            if (pm != null && pm.isHasNextPage()) {
+                currentList = pm.getObjects(videoCurrentPage);
+                initPlayer();
+            }
         }
+        if (isCurrentSingleScreen) {
+            if (singlePm != null && singlePm.isHasNextPage()) {
+                currentSingleList = singlePm.getObjects(videoCurrentPage);
+                String rtsp = "";
+                if (!TextUtils.isEmpty(currentSingleList.get(0).getRtspUrl())) {
+                    rtsp = currentSingleList.get(0).getRtspUrl();
+                }
+                initSinglePlayer(rtsp);
+            }
+        }
+
 
     }
 
+    /**
+     * 视频资源向上翻页
+     */
     @OnClick(R.id.video_previous_button)
     public void videoPreviousPage(View view) {
         videoCurrentPage--;
         if (pm != null && pm.isHasPreviousPage()) {
             currentList = pm.getObjects(videoCurrentPage);
             initPlayer();
+        }
+
+        if (isCurrentSingleScreen) {
+            if (singlePm != null && singlePm.isHasNextPage()) {
+                currentSingleList = singlePm.getObjects(videoCurrentPage);
+                String rtsp = "";
+                if (!TextUtils.isEmpty(currentSingleList.get(0).getRtspUrl())) {
+                    rtsp = currentSingleList.get(0).getRtspUrl();
+                }
+                initSinglePlayer(rtsp);
+            }
         }
     }
 
@@ -445,6 +512,28 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
                 });
             }
         }
+        if (singlePlayer == player) {
+            if (event == 1001) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        single_player_progressbar_layout.setVisibility(View.GONE);
+                        dispaly_video_loading_layout.setVisibility(View.GONE);
+                    }
+                });
+            } else if (event == 1003) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dispaly_video_loading_layout.setVisibility(View.VISIBLE);
+                        single_player_progressbar_layout.setVisibility(View.GONE);
+                        dispaly_video_loading_layout.setText(msg);
+                    }
+                });
+            }
+
+        }
+
     }
 
     @Override
@@ -493,6 +582,59 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
 
 
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        switch (v.getId()) {
+
+            case R.id.video_zoomout_button:
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    ControlPtz controlPtz = new ControlPtz("http://19.0.0.224/onvif/ptz_service", "000", "stop", 0.00, 0.00);
+                    controlPtz.start();
+                } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    ControlPtz controlPtz = new ControlPtz("http://19.0.0.224/onvif/ptz_service", "000", "zoom_s", -0.3, 0.00);
+                    controlPtz.start();
+                }
+                break;
+
+            case R.id.video_zoombig_button:
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    ControlPtz controlPtz = new ControlPtz("http://19.0.0.224/onvif/ptz_service", "000", "stop", 0.00, 0.00);
+                    controlPtz.start();
+                } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    ControlPtz controlPtz = new ControlPtz("http://19.0.0.224/onvif/ptz_service", "000", "zoom_b", 0.3, 0.00);
+                    controlPtz.start();
+                }
+
+                break;
+            case R.id.video_ptz_up:
+                isNoselected();
+                if (firstViewSelect) {
+                    ptzMoveUp(event, firstViewSelect, 0);
+                }
+                if (secondViewSelect) {
+                    ptzMoveUp(event, secondViewSelect, 1);
+                }
+                if (thirdViewSelect) {
+                    ptzMoveUp(event, thirdViewSelect, 2);
+                }
+                if (fourthViewSelect) {
+                    ptzMoveUp(event, fourthViewSelect, 3);
+                }
+                break;
+            case R.id.video_ptz_down:
+                isNoselected();
+
+                break;
+            case R.id.video_ptz_left:
+                break;
+            case R.id.video_ptz_right:
+                break;
+        }
+
+        return false;
     }
 
     //最底部的viewpager适配器
@@ -548,6 +690,60 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     @OnClick(R.id.single_screen_button_selecte)
     public void singleScreenVideo(View view) {
 
+        isCurrentFourScreen = false;
+        isCurrentSingleScreen = true;
+
+        if (firstViewSelect) {
+            String rtsp = "";
+            if (!TextUtils.isEmpty(currentList.get(0).getRtspUrl())) {
+                rtsp = currentList.get(0).getRtspUrl();
+            }
+            initSinglePlayer(rtsp);
+        }
+        if (secondViewSelect) {
+            String rtsp = "";
+            if (!TextUtils.isEmpty(currentList.get(1).getRtspUrl())) {
+                rtsp = currentList.get(1).getRtspUrl();
+            }
+            initSinglePlayer(rtsp);
+        }
+
+        if (thirdViewSelect) {
+            String rtsp = "";
+            if (!TextUtils.isEmpty(currentList.get(2).getRtspUrl())) {
+                rtsp = currentList.get(2).getRtspUrl();
+            }
+            initSinglePlayer(rtsp);
+        }
+
+        if (fourthViewSelect) {
+            String rtsp = "";
+            if (!TextUtils.isEmpty(currentList.get(3).getRtspUrl())) {
+                rtsp = currentList.get(3).getRtspUrl();
+            }
+            initSinglePlayer(rtsp);
+        }
+
+
+    }
+
+    //单屏播放
+    private void initSinglePlayer(String rtsp) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dispaly_video_loading_layout.setVisibility(View.VISIBLE);
+                single_player_progressbar_layout.setVisibility(View.VISIBLE);
+                dispaly_video_loading_layout.setText("Loading");
+            }
+        });
+
+        if (singlePlayer != null && singlePlayer.isPlaying()) {
+            singlePlayer.pause();
+            singlePlayer.stop();
+        }
+
         if (isLand == false) {
             single_screen_button_selecte.setSelected(true);
             four_screen_button_select.setSelected(false);
@@ -583,12 +779,18 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
         single_player_layout.setVisibility(View.VISIBLE);
         singlePlayer = new NodePlayer(this);
         singlePlayer.setPlayerView(single_player_layout);
-        singlePlayer.setInputUrl("rtmp://live.hkstv.hk.lxdns.com/live/hks");
+        singlePlayer.setInputUrl(rtsp);
         singlePlayer.setNodePlayerDelegate(this);
         singlePlayer.setAudioEnable(AppConfig.isVideoSound);
         singlePlayer.setVideoEnable(true);
         singlePlayer.start();
-        fourthPlayerView.setOnClickListener(this);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                display_video_information_text_layout.setText(currentSingleList.get(0).getName());
+            }
+        });
+        single_player_layout.setOnClickListener(this);
     }
 
     //four screen play video
@@ -613,9 +815,48 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
         secondPlayer.start();
         thirdPlayer.start();
         fourthPlayer.start();
-        four_screen_button_select.setSelected(true);
-        single_screen_button_selecte.setSelected(false);
+//        four_screen_button_select.setSelected(true);
+//        single_screen_button_selecte.setSelected(false);
 
+
+    }
+
+
+    //未选中的状态
+    public void isNoselected() {
+        if (firstViewSelect == false && secondViewSelect == false && thirdViewSelect == false && fourthViewSelect == false) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    toastShort("Please select one window");
+                    return;
+                }
+            });
+        }
+    }
+
+    //ptz云台向上转动
+    private void ptzMoveUp(MotionEvent event, boolean whichSelect, int posion) {
+        if (whichSelect) {
+            String firstPtzUrl = currentList.get(posion).getPtzUrl();
+            if (!TextUtils.isEmpty(firstPtzUrl)) {
+                ArrayList<MediaProfile> m = currentList.get(posion).getProfiles();
+                if (m.size() > 0) {
+                    String token = m.get(0).getToken();
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        ControlPtz controlPtz = new ControlPtz(firstPtzUrl, m.get(1).getToken(),
+                                "stop", 0.00, 0.00);
+                        controlPtz.start();
+                    } else if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        ControlPtz controlPtz = new ControlPtz(firstPtzUrl, m.get(1).getToken(), "top", 0.00, 0.01);
+                        controlPtz.start();
+                    }
+                }
+            }
+        } else {
+            toastShort("This video is not support Ptz!");
+            return;
+        }
 
     }
 }

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Zkth_App</string>
+    <string name="noSupportPtz">This video does not support the Ptz function.</string>
 </resources>

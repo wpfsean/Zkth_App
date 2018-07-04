@@ -314,11 +314,23 @@ public class Onvif implements Runnable {
                         }
                     } else if (parser.getName().equals("VideoEncoderConfiguration") && profile != null) {
                         //获取VideoEncode Token
-                        profile.getVideoEncode().setToken(parser.getAttributeValue(1));
+                        int count = parser.getAttributeCount();
+                        if (count == 2){
+                            profile.getVideoEncode().setToken(parser.getAttributeValue(1));
+                        }else if (count == 1){
+                            profile.getVideoEncode().setToken(parser.getAttributeValue(0));
+                        }
+
                         tag = "Video";
                     } else if (parser.getName().equals("AudioEncoderConfiguration") && profile != null) {
                         //获取AudioEncode Token
-                        profile.getAudioEncode().setToken(parser.getAttributeValue(1));
+                        int count = parser.getAttributeCount();
+                        if (count == 2){
+                            profile.getAudioEncode().setToken(parser.getAttributeValue(1));
+                        }else if (count == 1){
+                            profile.getAudioEncode().setToken(parser.getAttributeValue(0));
+                        }
+
                         tag = "Audio";
                     } else if (parser.getName().equals("Width") && profile != null) {
                         //分辨率宽

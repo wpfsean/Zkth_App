@@ -33,13 +33,13 @@ public class AppConfig {
     public static int server_port = 2010;
     //发送心跳的端口
     public static int heart_port = 2020;
-    //
+    //服务器ip
     public static String server_ip = "19.0.0.28";
-
+    //本机Ip
     public static String current_ip = "19.0.0.78";
-
     public static String current_user = "admin";
     public static String current_pass = "pass";
+    //sip服务器ip
     public static String native_sip_server_ip = "19.0.0.60";
 
     public static String native_sip_name = "7008";
@@ -52,6 +52,15 @@ public class AppConfig {
 
 
     public static String data = "";
+
+    //云台水平方向移动速率
+    public static String x = "0.2";
+    //云台垂直方向移动速率
+    public static String y = "0.2";
+    //云台的缩放速率
+    public static String s = "0.2";
+
+
 
 
 
