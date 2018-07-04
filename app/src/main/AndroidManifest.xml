@@ -47,6 +47,9 @@
         <service android:name=".services.SendheartService"></service>
         <receiver android:name=".callbacks.SendHeartReceiver"></receiver>
 
+        <!--电量监听-->
+        <service android:name=".callbacks.BatteryAndWifiService"></service>
+
 
         <activity
             android:name=".pagers.LoginPager"

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.ActivityManager;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
+import com.zhketech.client.zkth.app.project.callbacks.BatteryAndWifiService;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.services.SendheartService;
 import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
@@ -79,6 +80,7 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
     @Override
     public void initData() {
         startService(new Intent(this, SendheartService.class));
+        startService(new Intent(this, BatteryAndWifiService.class));
         TimeThread timeThread = new TimeThread();
         new Thread(timeThread).start();
     }
