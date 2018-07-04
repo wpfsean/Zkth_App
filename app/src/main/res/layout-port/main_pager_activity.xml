@@ -12,11 +12,18 @@
         android:layout_height="21.3dp">
 
         <TextView
+            android:id="@+id/main_incon_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="上午9:00"
             android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/main_icon_date"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
     </RelativeLayout>
 

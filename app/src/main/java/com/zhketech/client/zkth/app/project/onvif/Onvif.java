@@ -118,7 +118,7 @@ public class Onvif implements Runnable {
                 Locale.CHINA);
         mCreated = df.format(new Date());
         mNonce = getNonce();
-        mAuthPwd = getPasswordEncode(mNonce, device.getPsw(), mCreated);
+        mAuthPwd = getPasswordEncode(mNonce, device.getVideoBen().getPassword(), mCreated);
     }
 
     //密码加密
@@ -169,10 +169,10 @@ public class Onvif implements Runnable {
                     listern.getDeviceInfoResult("Ip of this video cannot be pinged", false,device);
                     return;
                 }
-                String parms = String.format(getServices, device.getUserName(), mAuthPwd, mNonce, mCreated);
+                String parms = String.format(getServices, device.getVideoBen().getUsername(), mAuthPwd, mNonce, mCreated);
                 String result = postRequest(device.getServiceUrl(), parms);
                 if (TextUtils.isEmpty(result)) {
-                    parms = String.format(getCapabilities, device.getUserName(), mAuthPwd, mNonce, mCreated);
+                    parms = String.format(getCapabilities,  device.getVideoBen().getUsername(), mAuthPwd, mNonce, mCreated);
                     result = postRequest(device.getServiceUrl(), parms);
                     if (TextUtils.isEmpty(result)) return;
                 }
@@ -180,14 +180,14 @@ public class Onvif implements Runnable {
                 resolveMediaUrlByXml(result);
                 String mediaUrl = device.getMediaUrl();
                 parms = String.format(GET_PROFILES,
-                        device.getUserName(), mAuthPwd, mNonce, mCreated);
+                        device.getVideoBen().getUsername(), mAuthPwd, mNonce, mCreated);
                 result = postRequest(mediaUrl, parms);
                 if (TextUtils.isEmpty(result)) {
                     listern.getDeviceInfoResult("Did not get the xml with token information", false,device);
                     return;
                 }
                 device.addProfiles(getMediaProfiles(result));
-                String channel = device.getChannel();
+                String channel = device.getVideoBen().getChannel();
                 int position = Integer.parseInt(channel);
                 int p = -1;
                 if (AppConfig.isMainStream) {
@@ -196,7 +196,8 @@ public class Onvif implements Runnable {
                     p = 2 * position - 1;
                 }
                 String profile = device.getProfiles().get(p).getToken();
-                parms = String.format(GET_URI, device.getUserName(),
+                device.getVideoBen().setToken(profile);
+                parms = String.format(GET_URI,  device.getVideoBen().getUsername(),
                         mAuthPwd, mNonce, mCreated, profile);
                 result = postRequest(mediaUrl, parms);
 
@@ -211,7 +212,7 @@ public class Onvif implements Runnable {
                         String[] flage = rtsp.split("//");
                         String header = flage[0];
                         String footer = flage[1];
-                        newUrl = header + "//" + device.getUserName() + ":" + device.getPsw() + "@" + footer;
+                        newUrl = header + "//" + device.getVideoBen().getUsername() + ":" + device.getVideoBen().getPassword() + "@" + footer;
                         device.setRtspUrl(newUrl);
                     }
                 }
@@ -269,6 +270,7 @@ public class Onvif implements Runnable {
                                 String ptzUrl = parser.nextText();
                                 if (!TextUtils.isEmpty(ptzUrl))
                                     device.setPtzUrl(ptzUrl);
+                                    device.getVideoBen().setPtz_url(ptzUrl);
                             }
                         }
                         break;

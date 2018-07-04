@@ -1,5 +1,7 @@
 package com.zhketech.client.zkth.app.project.onvif;
 
+import com.zhketech.client.zkth.app.project.beans.VideoBen;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -11,46 +13,11 @@ import java.util.ArrayList;
 public class Device implements Serializable {
 
     /**
-     * 用户名/密码
-     */
-    private String userName;
-    private String psw;
-    //IP地址
-    private String ipAddress;
-
-    /**
      * serviceUrl,uuid 通过广播包搜索设备获取
      */
     private String serviceUrl;
 
-    private String name;
-    private String devicetype;
-    private String channel;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDevicetype() {
-        return devicetype;
-    }
-
-    public void setDevicetype(String devicetype) {
-        this.devicetype = devicetype;
-    }
-
-    public String getChannel() {
-        return channel;
-    }
-
-    public void setChannel(String channel) {
-        this.channel = channel;
-    }
 
     /**
      * getCapabilities
@@ -71,6 +38,16 @@ public class Device implements Serializable {
         this.rtspUrl = rtspUrl;
     }
 
+    VideoBen videoBen ;
+
+    public VideoBen getVideoBen() {
+        return videoBen;
+    }
+
+    public void setVideoBen(VideoBen videoBen) {
+        this.videoBen = videoBen;
+    }
+
     /**
      * onvif MediaProfile
      */
@@ -81,21 +58,9 @@ public class Device implements Serializable {
         profiles = new ArrayList<>();
     }
 
-    public String getUserName() {
-        return userName;
-    }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
-    public String getPsw() {
-        return psw;
-    }
 
-    public void setPsw(String psw) {
-        this.psw = psw;
-    }
 
     public String getServiceUrl() {
         return serviceUrl;
@@ -103,7 +68,6 @@ public class Device implements Serializable {
 
     public void setServiceUrl(String serviceUrl) {
         this.serviceUrl = serviceUrl;
-        this.ipAddress = serviceUrl.substring(serviceUrl.indexOf("//") + 2, serviceUrl.indexOf("/on"));
     }
 
 
@@ -160,30 +124,20 @@ public class Device implements Serializable {
         this.profiles.addAll(profiles);
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
 
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
 
 
     @Override
     public String toString() {
         return "Device{" +
-                "userName='" + userName + '\'' +
-                ", psw='" + psw + '\'' +
-                ", ipAddress='" + ipAddress + '\'' +
                 ", serviceUrl='" + serviceUrl + '\'' +
-                ", name='" + name + '\'' +
-                ", devicetype='" + devicetype + '\'' +
-                ", channel='" + channel + '\'' +
                 ", mediaUrl='" + mediaUrl + '\'' +
                 ", ptzUrl='" + ptzUrl + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 ", eventUrl='" + eventUrl + '\'' +
                 ", analyticsUrl='" + analyticsUrl + '\'' +
+                ", rtspUrl='" + rtspUrl + '\'' +
+                ", videoBen=" + videoBen +
                 ", profiles=" + profiles +
                 '}';
     }

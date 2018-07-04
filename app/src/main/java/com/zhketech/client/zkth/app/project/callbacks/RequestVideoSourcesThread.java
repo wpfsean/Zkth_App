@@ -163,7 +163,6 @@ public class RequestVideoSourcesThread extends Thread {
                 videoBen.setUsername(userName1);
                 videoBen.setPassword(passWord1);
                 videoBen.setRtsp("");
-                videoBen.setSuporrtPtz(false);
                 videoBen.setPtz_url("");
                 videoBen.setToken("");
                 videoSourceInfoList.add(videoBen);

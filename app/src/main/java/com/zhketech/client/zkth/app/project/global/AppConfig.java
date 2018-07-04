@@ -41,14 +41,11 @@ public class AppConfig {
     public static String current_pass = "pass";
     //sip服务器ip
     public static String native_sip_server_ip = "19.0.0.60";
-
     public static String native_sip_name = "7008";
-
     //sip服务器管理员密码
     public static String sipServerPass = "123456";
     //sip服务器获取所有的sip用户信息
     public static String sipServerDataUrl = "http://" + native_sip_server_ip + ":8080/openapi/localuser/list?{\"syskey\":\"" + sipServerPass + "\"}";
-
 
 
     public static String data = "";
@@ -60,8 +57,8 @@ public class AppConfig {
     //云台的缩放速率
     public static String s = "0.2";
 
-
-
-
+    //发送报文地ip和port
+    public static String alarm_server_ip = "19.0.0.27";
+    public static  int alarm_server_port = 2000;
 
 }

@@ -38,10 +38,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <service android:name=".taking.tils.SipService"/>
+        <!--Sip-->
+        <service android:name=".taking.tils.SipService" />
+        <!--Rtsp直播-->
         <service android:name=".rtsp.RtspReceiveService"></service>
         <service android:name=".rtsp.RtspServer"></service>
+        <!--发送心跳-->
+        <service android:name=".services.SendheartService"></service>
+        <receiver android:name=".callbacks.SendHeartReceiver"></receiver>
 
 
         <activity

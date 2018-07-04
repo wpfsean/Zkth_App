@@ -584,7 +584,7 @@
                 android:layout_marginTop="6dp">
 
                 <ImageButton
-                    android:id="@+id/icon_btn7"
+                    android:id="@+id/send_alarmtoServer_button"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
@@ -597,7 +597,7 @@
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@+id/icon_btn7"
+                    android:layout_toRightOf="@+id/send_alarmtoServer_button"
                     android:background="@drawable/btn_alarm_select" />
 
                 <ImageButton

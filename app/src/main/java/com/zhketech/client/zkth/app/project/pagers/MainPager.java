@@ -3,34 +3,66 @@ package com.zhketech.client.zkth.app.project.pagers;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.ActivityManager;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
+import com.zhketech.client.zkth.app.project.services.SendheartService;
 import com.zhketech.client.zkth.app.project.taking.tils.Linphone;
 import com.zhketech.client.zkth.app.project.taking.tils.PhoneCallback;
 import com.zhketech.client.zkth.app.project.taking.tils.RegistrationCallback;
 import com.zhketech.client.zkth.app.project.taking.tils.SipService;
 import com.zhketech.client.zkth.app.project.utils.Logutils;
-
 import org.linphone.core.LinphoneCall;
+
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainPager extends BaseActivity implements View.OnClickListener {
 
+    //设置按键
     @BindView(R.id.button_setup)
     ImageButton button_setup;
+    //视频按键
     @BindView(R.id.button_video)
     ImageButton button_video;
-
+    //对讲按键
     @BindView(R.id.button_intercom)
     ImageButton button_intercom;
+    //时间
+    @BindView(R.id.main_incon_time)
+    TextView timeTextView;
+    //日期
+    @BindView(R.id.main_icon_date)
+    TextView dateTextView;
+
+    public  static  int timeFlage = 10001;
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == timeFlage){
+                long time = System.currentTimeMillis();
+                Date date = new Date(time);
+                SimpleDateFormat timeD = new SimpleDateFormat("HH:mm:ss");
+                timeTextView.setText(timeD.format(date));
+                SimpleDateFormat dateD = new SimpleDateFormat("MM月dd日 EEE");
+                dateTextView.setText(dateD.format(date));
+            }
+        }
+    };
+
 
     @Override
     public int intiLayout() {
@@ -44,12 +76,12 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
         button_video.setOnClickListener(this);
         button_intercom.setOnClickListener(this);
     }
-
     @Override
     public void initData() {
-
+        startService(new Intent(this, SendheartService.class));
+        TimeThread timeThread = new TimeThread();
+        new Thread(timeThread).start();
     }
-
 
     //切换屏幕的方向
     public void setDirection() {
@@ -190,5 +222,23 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
     protected void onPause() {
         super.onPause();
         SipService.removePhoneCallback();;
+    }
+
+    //显示时间的线程
+    class TimeThread extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = timeFlage;
+                    handler.sendMessage(msg);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+        }
     }
 }

@@ -14,7 +14,6 @@ public class VideoBen implements Serializable {
     private String username;
     private String password;
     private String rtsp;
-    private boolean isSuporrtPtz = false;
     private  String ptz_url;
     private String token;
 
@@ -36,7 +35,6 @@ public class VideoBen implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", rtsp='" + rtsp + '\'' +
-                ", isSuporrtPtz=" + isSuporrtPtz +
                 ", ptz_url='" + ptz_url + '\'' +
                 ", token='" + token + '\'' +
                 '}';
@@ -122,13 +120,6 @@ public class VideoBen implements Serializable {
         this.rtsp = rtsp;
     }
 
-    public boolean isSuporrtPtz() {
-        return isSuporrtPtz;
-    }
-
-    public void setSuporrtPtz(boolean suporrtPtz) {
-        isSuporrtPtz = suporrtPtz;
-    }
 
     public String getPtz_url() {
         return ptz_url;
@@ -158,7 +149,6 @@ public class VideoBen implements Serializable {
         this.username = username;
         this.password = password;
         this.rtsp = rtsp;
-        this.isSuporrtPtz = isSuporrtPtz;
         this.ptz_url = ptz_url;
         this.token = token;
     }
