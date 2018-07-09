@@ -126,7 +126,8 @@ public class LoginPager extends BaseActivity implements View.OnClickListener {
                 openActivity(MainPager.class);
                 break;
             case R.id.userlogin_button_cancel_layout:
-                onvifRtsp();
+                openActivity(ChannelListPager.class);
+//                onvifRtsp();
                 break;
         }
     }

@@ -6,31 +6,32 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.beans.SipGroupBean;
 
 import java.util.List;
 
 /**
- * SipGroup分组适配器
+ * SipGroup分组竖屏的适配器
  *
  * Created by Root on 2018/5/21.
  */
 
-public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGridAdapter.GridViewHolder> {
+public class RecyclerViewGridAdapterPort extends RecyclerView.Adapter<RecyclerViewGridAdapterPort.GridViewHolder> {
     private Context mContext;
     private List<SipGroupBean> mDateBeen;
     private MyItemClickListener mItemClickListener;
 
-    public RecyclerViewGridAdapter(Context context, List<SipGroupBean> dateBeen) {
+    public RecyclerViewGridAdapterPort(Context context, List<SipGroupBean> dateBeen) {
         mContext = context;
         mDateBeen = dateBeen;
     }
 
     @Override
     public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View    itemView = View.inflate(mContext, R.layout.sip_group_recyclearview_item, null);
+        View    itemView = View.inflate(mContext, R.layout.sip_group_recyclearview_item_port, null);
+
+
         GridViewHolder gridViewHolder = new GridViewHolder(itemView,mItemClickListener);
         return gridViewHolder;
     }
@@ -57,6 +58,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
         private final TextView item_title;
 
         public GridViewHolder(View itemView, MyItemClickListener myItemClickListener) {
+
             super(itemView);
             item_title = (TextView) itemView.findViewById(R.id.show_sip_group_name);
             this.mListener = myItemClickListener;

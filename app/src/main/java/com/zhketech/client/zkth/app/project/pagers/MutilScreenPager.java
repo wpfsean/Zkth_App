@@ -1,6 +1,7 @@
 package com.zhketech.client.zkth.app.project.pagers;
 
 import android.content.res.Configuration;
+import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.beans.VideoBen;
+import com.zhketech.client.zkth.app.project.callbacks.BatteryAndWifiService;
 import com.zhketech.client.zkth.app.project.callbacks.SendAlarmToServer;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.onvif.Device;
@@ -221,6 +223,11 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
         //初始页面单屏的数据
         singlePm = new PageModel(devicesList, 1);
         currentSingleList = singlePm.getObjects(videoCurrentPage);
+
+//        Bundle bundle = getIntent().getExtras();
+//        List<Device> dd = (List<Device>) bundle.getSerializable("previewdata");
+//        Logutils.i("SB:" + dd.toString());
+
         initPlayer();
     }
 
@@ -901,33 +908,34 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     @OnClick(R.id.send_alarmtoServer_button)
     public void sendAlarmToServer(View view) {
 
-            if (isCurrentSingleScreen) {
-                if (currentSingleList != null && currentSingleList.size() > 0) {
-                    VideoBen v = currentSingleList.get(0).getVideoBen();
-                    SendAlarmToServer sendAlarmToServer = new SendAlarmToServer(v);
-                    sendAlarmToServer.start();
-                }
+        if (isCurrentSingleScreen) {
+            if (currentSingleList != null && currentSingleList.size() > 0) {
+                VideoBen v = currentSingleList.get(0).getVideoBen();
+                SendAlarmToServer sendAlarmToServer = new SendAlarmToServer(v);
+                sendAlarmToServer.start();
             }
-            if (isCurrentFourScreen) {
+        }
+        if (isCurrentFourScreen) {
 
-                if (firstViewSelect) {
-                    sendToAlarm(1);
-                } else if (secondViewSelect) {
-                    sendToAlarm(2);
-                } else if (thirdViewSelect) {
-                    sendToAlarm(3);
-                } else if (fourthViewSelect) {
-                    sendToAlarm(4);
-                }else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            toastShort("please select one window");
-                        }
-                    });
-                }
+            if (firstViewSelect) {
+                sendToAlarm(1);
+            } else if (secondViewSelect) {
+                sendToAlarm(2);
+            } else if (thirdViewSelect) {
+                sendToAlarm(3);
+            } else if (fourthViewSelect) {
+                sendToAlarm(4);
+            } else {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        toastShort("please select one window");
+                    }
+                });
             }
+        }
     }
+
     //报警
     private void sendToAlarm(int tag) {
 
@@ -942,10 +950,17 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
             } else if (tag == 4) {
                 v = currentList.get(3).getVideoBen();
             }
-            if (v == null){return;}
+            if (v == null) {
+                return;
+            }
             SendAlarmToServer sendAlarmToServer = new SendAlarmToServer(v);
             sendAlarmToServer.start();
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }

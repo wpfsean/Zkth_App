@@ -56,6 +56,17 @@
             android:layout_marginRight="6dp"
             android:layout_toLeftOf="@+id/icon_electritity_show"
             android:background="@mipmap/icon_connection_normal" />
+
+        <TextView
+            android:id="@+id/battery_level_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="aaa"
+            android:visibility="gone"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            />
+
     </RelativeLayout>
 
     <!--视频播放所在的布局-->

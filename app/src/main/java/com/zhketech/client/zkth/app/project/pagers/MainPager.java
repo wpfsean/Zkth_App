@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.zhketech.client.zkth.app.project.R;
 import com.zhketech.client.zkth.app.project.base.ActivityManager;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
+import com.zhketech.client.zkth.app.project.callbacks.BatteryAndWifiCallback;
 import com.zhketech.client.zkth.app.project.callbacks.BatteryAndWifiService;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.services.SendheartService;
@@ -81,6 +82,7 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
     public void initData() {
         startService(new Intent(this, SendheartService.class));
         startService(new Intent(this, BatteryAndWifiService.class));
+        startService(new Intent(this, BatteryAndWifiService.class));
         TimeThread timeThread = new TimeThread();
         new Thread(timeThread).start();
     }
@@ -142,6 +144,20 @@ public class MainPager extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+        BatteryAndWifiService.addBatterCallback(new BatteryAndWifiCallback() {
+            @Override
+            public void getBatteryData(int level) {
+                super.getBatteryData(level);
+              //  Logutils.i("电量："+level);
+            }
+
+            @Override
+            public void getWifiData(int rssi) {
+                super.getWifiData(rssi);
+               // Logutils.i("信号："+rssi);
+            }
+        });
 
         Linphone.addCallback(new RegistrationCallback() {
             @Override

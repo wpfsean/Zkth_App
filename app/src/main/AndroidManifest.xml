@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.zhketech.client.zkth.app.project">
 
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -30,7 +29,6 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -38,18 +36,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <!--Sip-->
+
+        <!-- Sip -->
         <service android:name=".taking.tils.SipService" />
-        <!--Rtsp直播-->
-        <service android:name=".rtsp.RtspReceiveService"></service>
-        <service android:name=".rtsp.RtspServer"></service>
-        <!--发送心跳-->
-        <service android:name=".services.SendheartService"></service>
-        <receiver android:name=".callbacks.SendHeartReceiver"></receiver>
+        <!-- Rtsp直播 -->
+        <service android:name=".rtsp.RtspReceiveService" />
+        <service android:name=".rtsp.RtspServer" />
+        <!-- 发送心跳 -->
+        <service android:name=".services.SendheartService" />
 
-        <!--电量监听-->
-        <service android:name=".callbacks.BatteryAndWifiService"></service>
+        <receiver android:name=".callbacks.SendHeartReceiver" />
 
+        <!-- 电量监听 -->
+        <service android:name=".callbacks.BatteryAndWifiService" />
 
         <activity
             android:name=".pagers.LoginPager"
@@ -57,36 +56,31 @@
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".pagers.MainPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"></activity>
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".pagers.MutilScreenPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"></activity>
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".pagers.SipGroupPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"></activity>
-
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".pagers.SipInforPager"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"></activity>
-
-
+            android:screenOrientation="landscape" />
         <activity
             android:name=".pagers.SingleCallActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"></activity>
-
+            android:screenOrientation="landscape" />
+        <activity android:name=".pagers.ChannelListPager"></activity>
     </application>
 
 </manifest>

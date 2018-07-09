@@ -317,7 +317,8 @@ public class SingleCallActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(mRtspServiceConnection);
+//        if (mRtspServiceConnection != null)
+//        unbindService(mRtspServiceConnection);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
