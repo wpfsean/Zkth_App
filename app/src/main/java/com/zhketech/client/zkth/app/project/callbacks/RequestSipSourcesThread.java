@@ -232,6 +232,7 @@ public class RequestSipSourcesThread implements Runnable {
                 }
             }
         } catch (SocketException e) {
+            Logutils.e("SocketExecption:"+e.getMessage());
             e.printStackTrace();
         } catch (UnknownHostException e) {
             e.printStackTrace();

@@ -34,7 +34,7 @@ public class SipHttpUtils implements Runnable {
 					}
 				}else{
 					if (listern != null) {
-						listern.httpData("code != 200");
+						listern.httpData("Execption:code != 200");
 					}
 				}
 				con.disconnect();

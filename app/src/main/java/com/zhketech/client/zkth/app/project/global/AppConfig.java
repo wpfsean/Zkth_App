@@ -61,4 +61,11 @@ public class AppConfig {
     public static String alarm_server_ip = "19.0.0.27";
     public static  int alarm_server_port = 2000;
 
+
+    //值班室信息
+    public static final String DUTY_ROOM_URL = "http://wang1210.gz01.bdysite.com/zhketech/dutyRoomData.php";
+
+
+    //
+
 }

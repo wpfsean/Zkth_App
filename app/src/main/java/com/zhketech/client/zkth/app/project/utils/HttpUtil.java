@@ -10,6 +10,14 @@ import java.util.regex.Pattern;
 
 
 public class HttpUtil {
+
+    public static String getRequest(String url){
+
+
+
+        return "";
+    }
+
     /**
      * POST 请求
      */
