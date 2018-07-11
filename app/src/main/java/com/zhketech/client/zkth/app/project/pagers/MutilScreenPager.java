@@ -1,7 +1,6 @@
 package com.zhketech.client.zkth.app.project.pagers;
 
 import android.content.res.Configuration;
-import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
@@ -10,15 +9,18 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhketech.client.zkth.app.project.R;
+import com.zhketech.client.zkth.app.project.adapters.VideoResourcesListAda;
 import com.zhketech.client.zkth.app.project.base.BaseActivity;
 import com.zhketech.client.zkth.app.project.beans.VideoBen;
-import com.zhketech.client.zkth.app.project.callbacks.BatteryAndWifiService;
 import com.zhketech.client.zkth.app.project.callbacks.SendAlarmToServer;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.onvif.Device;
@@ -30,7 +32,6 @@ import com.zhketech.client.zkth.app.project.utils.PageModel;
 import com.zhketech.client.zkth.app.project.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -148,6 +149,28 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     @BindView(R.id.video_zoombig_button)
     ImageButton video_zoombig_button;
 
+    //load more btn
+    @BindView(R.id.loading_more_videosources_layout)
+    ImageButton loadMoreData;
+
+    //the parent layout of listview
+    @BindView(R.id.relativelayout_listview)
+    RelativeLayout relativelayout_listview;
+
+    //control layout
+    @BindView(R.id.show_relativelayout_all_button)
+    RelativeLayout show_relativelayout_all_button;
+
+    //direction layout
+    @BindView(R.id.relativelayout_control)
+    RelativeLayout relativelayout_control;
+
+
+    //展示视频数据的listview
+    @BindView(R.id.show_listresources)
+    public ListView show_listresources;
+
+
     //当前状态是四分屏
     boolean isCurrentFourScreen = true;
     //当前状态是单屏
@@ -184,6 +207,7 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
         video_ptz_right.setOnTouchListener(this);
         video_zoomout_button.setOnTouchListener(this);
         video_zoombig_button.setOnTouchListener(this);
+        loadMoreData.setOnClickListener(this);
 
         firstPalyer = new NodePlayer(this);
         firstPalyer.setPlayerView(firstPlayerView);
@@ -400,6 +424,13 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
             four_screen_button_select.setSelected(true);
             single_screen_button_selecte.setSelected(false);
 
+            //显示更多
+            findViewById(R.id.loading_more_videosources_layout).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    openActivity(ChannelListPager.class);
+                }
+            });
         }
     }
 
@@ -557,6 +588,12 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            //加载更多数据
+            case R.id.loading_more_videosources_layout:
+
+                initListViewData();
+
+                break;
             case R.id.first_player_layout:
                 first_surfaceview_relativelayout.setBackgroundResource(R.drawable.video_relativelayout_bg_select_shape);
                 second_surfaceview_relativelayout.setBackgroundResource(R.drawable.video_relativelayout_bg_shape);
@@ -599,6 +636,110 @@ public class MutilScreenPager extends BaseActivity implements ViewPager.OnPageCh
                 break;
 
 
+        }
+    }
+
+    /**
+     * Listview show
+     */
+    private void initListViewData() {
+        if (devicesList != null && devicesList.size() > 0) {
+            relativelayout_listview.setVisibility(View.VISIBLE);
+            show_relativelayout_all_button.setVisibility(View.GONE);
+            relativelayout_control.setVisibility(View.GONE);
+            final VideoResourcesListAda ada = new VideoResourcesListAda(devicesList, MutilScreenPager.this);
+            View footView = (View) LayoutInflater.from(this).inflate(R.layout.footview, null);
+            RelativeLayout refresh_relativelayout_data = (RelativeLayout) footView.findViewById(R.id.refresh_relativelayout_data);
+            if (show_listresources.getFooterViewsCount() == 0) {
+                show_listresources.addFooterView(footView);
+            }
+            show_listresources.setAdapter(ada);
+            ada.notifyDataSetChanged();
+            //刷新数据
+            refresh_relativelayout_data.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ada.notifyDataSetChanged();
+                    initListViewData();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MutilScreenPager.this, "Refreshed !!!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            });
+
+            //点击item播放
+            show_listresources.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            relativelayout_listview.setVisibility(View.GONE);
+                            show_relativelayout_all_button.setVisibility(View.VISIBLE);
+                            relativelayout_control.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    String rtsp = "////";
+                    if (devicesList.get(position) != null) {
+                        rtsp = devicesList.get(position).getRtspUrl();
+                        if (TextUtils.isEmpty(rtsp)){
+                            rtsp = "this is test";
+                        }
+                    }
+                    //判断当前是否是单屏
+                    if (isCurrentSingleScreen) {
+                        initSinglePlayer(rtsp);
+                    } else if (isCurrentFourScreen) {
+                        if (firstViewSelect) {
+                            if (firstPalyer != null && firstPalyer.isPlaying()) {
+                                firstPalyer.stop();
+                            }
+                            firstPalyer.setInputUrl(rtsp);
+                            firstPalyer.setNodePlayerDelegate(MutilScreenPager.this);
+                            firstPalyer.setAudioEnable(AppConfig.isVideoSound);
+                            firstPalyer.setVideoEnable(true);
+                            firstPalyer.start();
+                        }
+
+                        if (secondViewSelect) {
+                            if (secondPlayer != null && secondPlayer.isPlaying()) {
+                                secondPlayer.stop();
+                            }
+                            secondPlayer.setInputUrl(rtsp);
+                            secondPlayer.setNodePlayerDelegate(MutilScreenPager.this);
+                            secondPlayer.setAudioEnable(AppConfig.isVideoSound);
+                            secondPlayer.setVideoEnable(true);
+                            secondPlayer.start();
+                        }
+
+                        if (thirdViewSelect) {
+                            if (thirdPlayer != null && thirdPlayer.isPlaying()) {
+                                thirdPlayer.stop();
+                            }
+                            thirdPlayer.setInputUrl(rtsp);
+                            thirdPlayer.setNodePlayerDelegate(MutilScreenPager.this);
+                            thirdPlayer.setAudioEnable(AppConfig.isVideoSound);
+                            thirdPlayer.setVideoEnable(true);
+                            thirdPlayer.start();
+                        }
+
+                        if (fourthViewSelect) {
+                            if (fourthPlayer != null && fourthPlayer.isPlaying()) {
+                                fourthPlayer.stop();
+                            }
+                            fourthPlayer.setInputUrl(rtsp);
+                            fourthPlayer.setNodePlayerDelegate(MutilScreenPager.this);
+                            fourthPlayer.setAudioEnable(AppConfig.isVideoSound);
+                            fourthPlayer.setVideoEnable(true);
+                            fourthPlayer.start();
+                        }
+                    }
+                }
+            });
         }
     }
 

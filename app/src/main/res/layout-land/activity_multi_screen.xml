@@ -542,7 +542,7 @@
                     android:background="@drawable/btn_amplification_select" />
 
                 <ImageButton
-                    android:id="@+id/icon_btn3"
+                    android:id="@+id/loading_more_videosources_layout"
                     android:layout_width="41dp"
                     android:layout_height="41dp"
                     android:layout_centerVertical="true"

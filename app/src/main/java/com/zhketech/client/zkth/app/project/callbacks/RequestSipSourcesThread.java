@@ -6,6 +6,9 @@ import com.zhketech.client.zkth.app.project.beans.SipBean;
 import com.zhketech.client.zkth.app.project.beans.VideoBen;
 import com.zhketech.client.zkth.app.project.global.AppConfig;
 import com.zhketech.client.zkth.app.project.utils.ByteUtils;
+import com.zhketech.client.zkth.app.project.utils.Logutils;
+import com.zhketech.client.zkth.app.project.utils.SharedPreferencesUtils;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +54,7 @@ public class RequestSipSourcesThread implements Runnable {
             bys[6] = 0;
             bys[7] = 0;
 
-            String name = AppConfig.current_user + "/" + AppConfig.current_pass + "/"+ AppConfig.current_ip+"/"+type;
+            String name = AppConfig.current_user + "/" + AppConfig.current_pass + "/"+ SharedPreferencesUtils.getObject(mContext,"nativeIp","")+"/"+type;
             byte[] na = name.getBytes(AppConfig.dataFormat);
             for (int i = 0; i < na.length; i++) {
                 bys[i + 8] = na[i];
@@ -222,8 +225,6 @@ public class RequestSipSourcesThread implements Runnable {
                             sipNumberString, "", "", "", videoBen, "",false,"","");
                     sipSources.add(sipBen);
                 }
-
-
             }
             if (sipSources.size() > 0) {
                 if (listern != null) {

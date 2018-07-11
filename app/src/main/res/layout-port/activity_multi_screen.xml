@@ -5,6 +5,32 @@
     android:orientation="vertical">
 
 
+
+    <RelativeLayout
+        android:id="@+id/relativelayout_listview"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/show_relativelayout_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/relativelayout_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ListView
+                    android:id="@+id/show_listresources"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"></ListView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="584dp"

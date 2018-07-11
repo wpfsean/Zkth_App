@@ -52,7 +52,7 @@ public class RecyclerViewGridAdapter extends RecyclerView.Adapter<RecyclerViewGr
     }
 
     //自动帮我们写的ViewHolder，参数：View布局对象
-    public class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class GridViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private MyItemClickListener mListener;
         private final TextView item_title;
 

@@ -14,13 +14,15 @@ import java.util.List;
 
 /**
  * Created by Root on 2018/7/9.
+ *
+ * y底部的sliding滑动适配器
+ *
  */
 
 public class ButtomSlidingAdapter extends RecyclerView.Adapter<ButtomSlidingAdapter.ViewHolder> {
 
     Context context;
     List<ButtomSlidingBean> dataList;
-
     public ButtomSlidingAdapter(Context context, List<ButtomSlidingBean> dataList) {
         this.context = context;
         this.dataList = dataList;
